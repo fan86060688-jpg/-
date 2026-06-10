@@ -1,0 +1,13 @@
+node_modules/
+
+# Local secrets and machine-specific environment files.
+.env
+.env.*
+!.env.example
+
+# Local runtime configuration. Commit config/config.example.json instead.
+config/config.json
+
+# Runtime data, browser sessions, generated videos, screenshots, and order state.
+data/
+!data/.gitkeep

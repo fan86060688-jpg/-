@@ -1,0 +1,37 @@
+{
+  "name": "auto-short-video-publisher",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "run": "node src/cli.js run",
+    "review": "node src/cli.js review",
+    "check-live": "node src/cli.js check-live",
+    "inspect-page": "node src/cli.js inspect-page",
+    "inspect-click": "node src/cli.js inspect-click",
+    "inspect-search": "node src/cli.js inspect-search",
+    "inspect-keyboard-search": "node src/cli.js inspect-keyboard-search",
+    "search-source": "node src/cli.js search-source",
+    "search-storage": "node src/cli.js search-storage",
+    "search-resources": "node src/cli.js search-resources",
+    "capture-network": "node src/cli.js capture-network",
+    "login-session": "node src/cli.js login-session",
+    "login-neobund-google": "node src/cli.js login-neobund-google",
+    "login-neobund": "node src/cli.js login-neobund",
+    "login-miaoshou": "node src/cli.js login-miaoshou",
+    "approve": "node src/cli.js approve",
+    "render-missing-videos": "node src/cli.js render-missing-videos",
+    "cleanup-demo": "node src/cli.js cleanup-demo",
+    "refresh-accounts": "node src/cli.js refresh-accounts",
+    "publish": "node src/cli.js publish",
+    "system": "node src/dashboard-server.js"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "playwright": "1.60.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
