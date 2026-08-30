@@ -1,0 +1,64 @@
+name: Import MX Shop 1 images 20260830
+
+on:
+  push:
+    branches:
+      - mx-shop1-import-20260830
+    paths:
+      - .github/workflows/import-mx-shop1-images-20260830.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Download and validate public images
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='https://mx-shop1-images-20260830.hildebranddermas773.chatgpt.site/images'
+          skus=(
+            'VAS.44.4' 'HOG.327.GRIS' 'HOG.326.PER' 'PAR.17' 'BC.P1'
+            'PAR.KH02' 'PAR.30' 'CON.58.B' 'HOG.149' 'CON.49.L'
+            'PAR.KH03' 'HOG.326.AZUL' 'PAR.08' 'HOG.327.NEGRO'
+            'HOG.124.Sx6' 'HOG.1022' 'HOG.123.GOFRES'
+          )
+          slots=(01 02 03 04 05 06 07 08 SKU)
+          mkdir -p mx-shop1-20260830
+          for sku in "${skus[@]}"; do
+            mkdir -p "mx-shop1-20260830/$sku"
+            for slot in "${slots[@]}"; do
+              curl --fail --silent --show-error --location \
+                --retry 4 --retry-all-errors \
+                --user-agent 'Mozilla/5.0 GitHubActions Image Import' \
+                "$base/$sku/$slot.webp" \
+                --output "mx-shop1-20260830/$sku/$slot.webp"
+            done
+          done
+          test "$(find mx-shop1-20260830 -type f -name '*.webp' | wc -l | tr -d ' ')" = '153'
+          find mx-shop1-20260830 -type f -name '*.webp' -print0 |
+            xargs -0 file |
+            grep -v 'Web/P image' &&
+            { echo 'Non-WebP file detected'; exit 1; } || true
+
+      - name: Commit immutable image branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch --orphan mx-shop1-images-20260830
+          git rm -rf . >/dev/null 2>&1 || true
+          git checkout -- main -- mx-shop1-20260830
+          git add mx-shop1-20260830
+          git commit -m 'Add Mexico Shop 1 images for 17 SKUs'
+          git push --force origin HEAD:mx-shop1-images-20260830
