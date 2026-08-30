@@ -56,9 +56,10 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          mv mx-shop1-20260830 "$RUNNER_TEMP/mx-shop1-20260830"
           git switch --orphan mx-shop1-images-20260830
           git rm -rf . >/dev/null 2>&1 || true
-          git checkout -- main -- mx-shop1-20260830
+          mv "$RUNNER_TEMP/mx-shop1-20260830" .
           git add mx-shop1-20260830
           git commit -m 'Add Mexico Shop 1 images for 17 SKUs'
           git push --force origin HEAD:mx-shop1-images-20260830
